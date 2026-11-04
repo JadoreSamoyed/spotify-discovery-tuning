@@ -1,26 +1,22 @@
 # Spotify Discovery Tuning
 
-**Find tracks you may have missed by artists you already like.**
+**Spotify keeps serving the same songs? Find something you missed by an artist you already love.**
 
-[简体中文](README.zh-CN.md) · [Skill](skills/spotify-discovery-tuning/SKILL.md) · [Evaluation notes](evals/README.md)
+[简体中文](README.zh-CN.md) · [Download the skill](https://github.com/JadoreSamoyed/spotify-discovery-tuning/releases/latest) · [Install in Codex](#install-in-a-codex-project) · [What we tested](evals/README.md)
 
-An instruction-only agent skill for music discovery when recommendations keep circling back to the same songs. It treats **knowing an artist** and **knowing a track** as separate signals, then uses your feedback to refine the next small batch.
+![A vinyl record with two feedback stickers. Love the artist. Missed the track?](docs/launch-card.png)
 
-## Two turns, one useful correction
+## Watch the second round change
 
-*Synthetic illustration of the workflow. No real listener, track recommendations, or live verification results are represented here.*
-
-**Turn 1**
-
-> **You:** Find songs I haven't heard by artists I already know. Don't keep returning their biggest hits.
+> **You:** I love Arooj Aftab. I've heard “Mohabbat” too many times. What else should I try?
 >
-> **Assistant:** I'll keep those artists in scope, exclude songs you've already identified as familiar, and start with a small batch. I'll label which track details I can verify; whether you've heard a song is still for you to confirm.
-
-**Turn 2**
-
-> **You:** Candidate A is familiar. Candidate B is new to me and fits. More in that direction.
+> **Round 1:** [Last Night](https://open.spotify.com/track/3OBkjktMqs7QJ6dOUPWTji), from the same album. Set “Mohabbat” aside for now.
 >
-> **Assistant:** I'll exclude A and use B to guide the next batch. Familiar artists remain eligible; your feedback changes which tracks I look for.
+> **You:** “Last Night” was new to me and I liked it. Stay with this artist.
+>
+> **Round 2:** [Suroor](https://open.spotify.com/track/43li6JLxAxfmyVlHIbO9rn) and [Udhero Na feat. Anoushka Shankar](https://open.spotify.com/track/2hFN5GkZ1CNZNRp1tFYWqW). Arooj Aftab stays in the mix. The first round's track stays out.
+
+*Fictional listener feedback, with public Spotify catalog entries.*
 
 ## What the skill does
 
@@ -82,3 +78,5 @@ Catalog verification establishes what a recording is. Your feedback establishes 
 See [evaluation notes](evals/README.md) for the available checks and their limits. There is **no measured listener uplift** and no claim that this skill outperforms an ordinary prompt. The demo above illustrates intended behavior, not a listening experiment.
 
 [MIT license](LICENSE). Independent community project; not affiliated with Spotify or OpenAI.
+
+If this helped you find a track you want to hear again, star the repo so you can find it later. If the second round missed, a short report with the prompt and outcome helps us improve it. [Share feedback](https://github.com/JadoreSamoyed/spotify-discovery-tuning/issues/new)

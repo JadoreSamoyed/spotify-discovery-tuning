@@ -1,26 +1,22 @@
 # Spotify Discovery Tuning
 
-**从喜欢的歌手里找可能漏听的歌。**
+**Spotify 又推同一首？从你熟悉的歌手里挖一首漏听的。**
 
-[English](README.md) · [技能文件](skills/spotify-discovery-tuning/SKILL.md) · [评估说明](evals/README.md)
+[English](README.md) · [下载技能](https://github.com/JadoreSamoyed/spotify-discovery-tuning/releases/latest) · [安装到 Codex](#安装到-codex-项目) · [评估说明](evals/README.md)
 
-当推荐总在同几首歌里打转，这个纯指令型智能体技能会把**熟悉歌手**和**听过歌曲**分开判断，再根据你的反馈调整下一小批推荐。
+![黑胶唱片上的两张反馈贴纸：听熟了、第一次听。](docs/launch-card.png)
 
-## 两轮对话，让反馈真正影响下一批
+## 看看第二轮怎么变
 
-*以下是合成示例，仅展示工作方式，不代表真实听众、实际曲目推荐或在线核验结果。*
-
-**第一轮**
-
-> **你：** 想听熟悉歌手唱的、我还没听过的歌，别总给我他们最热门的那几首。
+> **你：** 我喜欢 Arooj Aftab，但《Mohabbat》听腻了。还有什么可以试试？
 >
-> **助手：** 我会保留这些歌手，排除你已明确听过的歌曲，先给一小批候选。曲目资料能否核验会单独标明；你有没有听过，仍需要你的反馈。
-
-**第二轮**
-
-> **你：** 候选 A 听过了。候选 B 没听过，而且对味，再沿这个方向找。
+> **第一轮：** 试试同张专辑的 [Last Night](https://open.spotify.com/track/3OBkjktMqs7QJ6dOUPWTji)。《Mohabbat》先放一放。
 >
-> **助手：** 下一批排除 A，用 B 的反馈来调整方向。熟悉的歌手仍然可以入选，变化的是具体找哪些歌。
+> **你：** 《Last Night》第一次听，很对味。继续找她的歌。
+>
+> **第二轮：** 试试 [Suroor](https://open.spotify.com/track/43li6JLxAxfmyVlHIbO9rn) 和 [Udhero Na feat. Anoushka Shankar](https://open.spotify.com/track/2hFN5GkZ1CNZNRp1tFYWqW)。保留这位歌手，换掉上一轮已经给过的歌。
+
+*听众反馈为虚构示例，歌曲可在 Spotify 公开曲库找到。*
 
 ## 它会做什么
 
@@ -82,3 +78,5 @@ $spotify-discovery-tuning
 已有检查及其边界见 [评估说明](evals/README.md)。目前**没有实测的听众体验提升数据**，也不声称优于普通提示词。上面的对话展示预期行为，不是试听实验。
 
 采用 [MIT 许可证](LICENSE)。独立社区项目，与 Spotify、OpenAI 无隶属关系。
+
+如果它帮你挖到一首想再听的歌，可以点个 Star 方便下次找到。第二轮选偏了，也欢迎留下一条具体反馈。[提交反馈](https://github.com/JadoreSamoyed/spotify-discovery-tuning/issues/new)
