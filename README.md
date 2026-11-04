@@ -29,9 +29,13 @@ This is a conversational workflow. It does not change Spotify's native recommend
 
 ## Install in a Codex project
 
-Requires Git and an agent host that supports local skills. The commands use Codex's project skill directory, `.agents/skills`. [Official Codex skill guide](https://developers.openai.com/codex/skills/)
+With Node.js 22.20+ and Git, run this from the project where you want the skill:
 
-Run from the project where you want to use the skill. Clone the source, read `SKILL.md`, then copy the skill folder.
+```bash
+npx skills add JadoreSamoyed/spotify-discovery-tuning --skill spotify-discovery-tuning --agent codex --copy
+```
+
+You can also download the release ZIP or review the source and copy the folder manually. Codex loads project skills from `.agents/skills`. [Skills CLI reference](https://www.skills.sh/docs/cli) · [Codex skill guide](https://developers.openai.com/codex/skills/)
 
 <details>
 <summary>Bash</summary>

@@ -29,9 +29,13 @@
 
 ## 安装到 Codex 项目
 
-需要 Git，以及支持本地技能的智能体宿主。以下使用 Codex 的项目技能目录 `.agents/skills`。[Codex 官方技能文档](https://developers.openai.com/codex/skills/)
+如果已安装 Node.js 22.20+ 和 Git，在准备使用技能的项目目录运行：
 
-在准备使用技能的项目目录中执行：先克隆源码，阅读 `SKILL.md`，再复制技能文件夹。
+```bash
+npx skills add JadoreSamoyed/spotify-discovery-tuning --skill spotify-discovery-tuning --agent codex --copy
+```
+
+也可以下载发行版 ZIP，或阅读源码后手动复制技能目录。Codex 从项目的 `.agents/skills` 加载技能。[Skills CLI 文档](https://www.skills.sh/docs/cli) · [Codex 技能文档](https://developers.openai.com/codex/skills/)
 
 <details>
 <summary>Bash</summary>
