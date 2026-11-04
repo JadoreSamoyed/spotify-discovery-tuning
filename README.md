@@ -1,86 +1,39 @@
 # Spotify Discovery Tuning
 
-**Spotify keeps serving the same songs? Find something you missed by an artist you already love.**
+**One idea. A Spotify playlist shaped by your taste, with new picks every day.**
 
-[简体中文](README.zh-CN.md) · [Download the skill](https://github.com/JadoreSamoyed/spotify-discovery-tuning/releases/latest) · [Install in Codex](#install-in-a-codex-project) · [What we tested](evals/README.md)
+[简体中文](README.zh-CN.md) · [Download the skill](https://github.com/JadoreSamoyed/spotify-discovery-tuning/releases/latest) · [Install](#install-in-codex) · [Verification](evals/README.md)
 
-![A vinyl record with two feedback stickers. Love the artist. Missed the track?](docs/launch-card.png)
+![One idea leads to a Spotify playlist and daily additions that fit the same taste.](docs/launch-card.png)
 
-## Watch the second round change
+## Give it one idea
 
-> **You:** I love Arooj Aftab. I've heard “Mohabbat” too many times. What else should I try?
->
-> **Round 1:** [Last Night](https://open.spotify.com/track/3OBkjktMqs7QJ6dOUPWTji), from the same album. Set “Mohabbat” aside for now.
->
-> **You:** “Last Night” was new to me and I liked it. Stay with this artist.
->
-> **Round 2:** [Suroor](https://open.spotify.com/track/43li6JLxAxfmyVlHIbO9rn) and [Udhero Na feat. Anoushka Shankar](https://open.spotify.com/track/2hFN5GkZ1CNZNRp1tFYWqW). Arooj Aftab stays in the mix. The first round's track stays out.
+> Make me a rainy-night walking playlist. Keep my post-punk taste and hazy guitars, but branch out. Add five new tracks to the same playlist every morning at 8:30, Asia/Shanghai.
 
-*Fictional listener feedback, with public Spotify catalog entries.*
+The agent uses your brief to look in three directions. In this example, it digs deeper into a familiar artist with [Primary · The Cure](https://open.spotify.com/track/4fnx6Wman02ryvAOqKm6iI), moves to a related band with [Second Skin · The Chameleons](https://open.spotify.com/track/5F43dz91uj1bQRKDvXbt1f), and explores a neighboring sound with [Lorelei · Cocteau Twins](https://open.spotify.com/track/1ZnXuijpwEBjhNxpEnb8WH). Each direction stays tied to the brief.
 
-## What the skill does
+With the needed tools and your request, the agent creates a private Spotify playlist and schedules daily additions to that same playlist. It checks for duplicates before adding, keeps existing tracks, and gives you the playlist link and schedule. A later instruction such as “more bass, fewer slow tracks” can tune future picks.
 
-- Separates artist familiarity, track familiarity, and whether a recommendation fits.
-- Refines a small batch using concrete feedback instead of restarting from a generic recommendation request.
-- Checks recording identity and Spotify links when compatible catalog tools are available, and labels anything it cannot verify.
-- Keeps working preferences in the current conversation by default. Saving a preference file or creating or changing a playlist requires an explicit request.
+*Illustrative brief and workflow. The tracks were checked in the public catalog. The example does not create a playlist or schedule.*
 
-This is a conversational workflow. It does not change Spotify's native recommendation algorithm.
+## Install in Codex
 
-## Install in a Codex project
-
-With Node.js 22.20+ and Git, run this from the project where you want the skill:
+From your project with Node.js 22.20+ and Git:
 
 ```bash
 npx skills add JadoreSamoyed/spotify-discovery-tuning --skill spotify-discovery-tuning --agent codex --copy
 ```
 
-You can also download the release ZIP or review the source and copy the folder manually. Codex loads project skills from `.agents/skills`. [Skills CLI reference](https://www.skills.sh/docs/cli) · [Codex skill guide](https://developers.openai.com/codex/skills/)
+Or extract the [release ZIP](https://github.com/JadoreSamoyed/spotify-discovery-tuning/releases/latest) into `.agents/skills` so that `.agents/skills/spotify-discovery-tuning/SKILL.md` exists. Connect Spotify to the host and open Codex in the project. Type `$spotify-discovery-tuning` and paste your listening idea.
 
-<details>
-<summary>Bash</summary>
+| Use case | What the agent needs |
+| --- | --- |
+| Preview picks | Spotify catalog read access |
+| Build a Spotify playlist | Spotify playlist create and add access, or an eligible playlist generator |
+| Keep the same playlist fresh | A supported scheduler with access to the skill, the same authorized playlist connection, and private run state |
 
-```bash
-git clone https://github.com/JadoreSamoyed/spotify-discovery-tuning.git spotify-discovery-tuning-source
-cat spotify-discovery-tuning-source/skills/spotify-discovery-tuning/SKILL.md
-mkdir -p .agents/skills
-cp -R spotify-discovery-tuning-source/skills/spotify-discovery-tuning .agents/skills/
-```
+The agent creates the schedule only when you ask for recurring updates. In Codex, use a chat with Scheduled available. A task that needs local skill files or run state needs the computer and app running. Check the first scheduled run in your host. [Codex scheduled tasks](https://learn.chatgpt.com/docs/automations?surface=app)
 
-</details>
+See [the skill](skills/spotify-discovery-tuning/SKILL.md) and the [daily refresh rules](skills/spotify-discovery-tuning/references/daily-refresh.md) for the full workflow and fallback behavior.
 
-<details>
-<summary>PowerShell</summary>
-
-```powershell
-git clone https://github.com/JadoreSamoyed/spotify-discovery-tuning.git spotify-discovery-tuning-source
-Get-Content -LiteralPath './spotify-discovery-tuning-source/skills/spotify-discovery-tuning/SKILL.md' -Raw
-New-Item -ItemType Directory -Force -Path './.agents/skills' | Out-Null
-Copy-Item -LiteralPath './spotify-discovery-tuning-source/skills/spotify-discovery-tuning' -Destination './.agents/skills/' -Recurse
-```
-
-</details>
-
-The resulting file should be `.agents/skills/spotify-discovery-tuning/SKILL.md`. If the skill does not appear in Codex, restart Codex. Invoke it with:
-
-```text
-$spotify-discovery-tuning
-Help me find unfamiliar tracks by familiar artists. Start with a small batch,
-ask for the artists or tracks you need, and refine it from my feedback.
-```
-
-## Catalog access and verification
-
-Live verification requires **compatible Spotify catalog search or lookup tools connected to your agent host**. This repository supplies instructions, not a Spotify connector or credentials.
-
-If the tools are unavailable, the skill asks for a connection or Spotify links and clearly labels the verification status. A supplied link alone is not proof that its contents were checked. You can still discuss what to look for, but unverified candidates must not be presented as verified catalog results.
-
-Catalog verification establishes what a recording is. Your feedback establishes whether it is unfamiliar to you.
-
-## Evidence and scope
-
-See [evaluation notes](evals/README.md) for the available checks and their limits. There is **no measured listener uplift** and no claim that this skill outperforms an ordinary prompt. The demo above illustrates intended behavior, not a listening experiment.
-
-[MIT license](LICENSE). Independent community project; not affiliated with Spotify or OpenAI.
-
-If this helped you find a track you want to hear again, star the repo so you can find it later. If the second round missed, a short report with the prompt and outcome helps us improve it. [Share feedback](https://github.com/JadoreSamoyed/spotify-discovery-tuning/issues/new)
+[MIT license](LICENSE). If it helped you build a playlist worth keeping, star the repo or share the idea that worked. [Issues](https://github.com/JadoreSamoyed/spotify-discovery-tuning/issues)

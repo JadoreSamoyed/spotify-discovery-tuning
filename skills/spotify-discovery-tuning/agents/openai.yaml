@@ -1,4 +1,4 @@
 interface:
   display_name: "Spotify Discovery Tuning"
-  short_description: "Find fresh tracks and adapt from listening feedback"
-  default_prompt: "Use $spotify-discovery-tuning to find a few songs I may have missed by artists I already like."
+  short_description: "Build a taste-shaped Spotify playlist that updates daily"
+  default_prompt: "Use $spotify-discovery-tuning to make me a rainy-night walking playlist and add five new songs every morning."

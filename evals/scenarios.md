@@ -2,6 +2,38 @@
 
 Run each block in a fresh conversation with the skill loaded. All names and identifiers here are invented. Treat fixture entries as simulated tool responses. Use no network, account access, or actual writes for these scenarios.
 
+## A. From one idea to a scheduled playlist
+
+> Build a rainy-night walking playlist. My favorite band is Nori Glass. Keep the post-punk bass and hazy guitar, but broaden the selection. Add five new tracks to this playlist each morning at 8:30 in Asia/Shanghai.
+>
+> The fixture catalog has eligible tracks by Nori Glass, a related band sharing the bass-driven sound, an adjacent band with hazy guitars, and unrelated dance tracks. All candidates have unique fixture URIs. Private create, append, complete readback, a same-account scheduler and a private serial run ledger are available. There is no prior playlist or job.
+
+## B. Missing scheduler
+
+> Create a walking playlist with bass-driven post-punk and update it daily.
+>
+> Private create, append and readback succeed. No scheduler is available to this chat.
+
+## C. Same-day ambiguous append
+
+> Run the requested daily update for playlist P for 2026-11-05 in Asia/Shanghai.
+>
+> A private receipt for that date froze five candidates, R10 through R14. The append timed out and may still be in flight. A full reread shows R10 only. The playlist is otherwise intact.
+
+## D. Account changed
+
+> Run the daily update for P.
+>
+> The schedule was authorized using Account A. The scheduled tool now uses Account B. P remains editable due to a collaborator grant. A different playlist has the same name.
+
+## E. Suggestions only
+
+> Suggest a few bass-forward post-punk and adjacent records for a rainy-night walk. Nori Glass is a good starting point.
+>
+> Catalog read, playlist write and scheduling tools are present. The user requested suggestions.
+
+## Previous coverage
+
 ## 1. Familiar artist and alternate editions
 
 > I know Nori Glass and still love “Porch Light,” but I've heard it too often. Pick two tracks I might have missed by Nori Glass. You already suggested “Paper Bridge” in this chat.

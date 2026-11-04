@@ -1,86 +1,39 @@
 # Spotify Discovery Tuning
 
-**Spotify 又推同一首？从你熟悉的歌手里挖一首漏听的。**
+**丢一句想法，建一张合你口味、每天有新歌的 Spotify 歌单。**
 
-[English](README.md) · [下载技能](https://github.com/JadoreSamoyed/spotify-discovery-tuning/releases/latest) · [安装到 Codex](#安装到-codex-项目) · [评估说明](evals/README.md)
+[English](README.md) · [下载技能](https://github.com/JadoreSamoyed/spotify-discovery-tuning/releases/latest) · [安装](#安装到-codex) · [验证记录](evals/README.md)
 
-![黑胶唱片上的两张反馈贴纸：听熟了、第一次听。](docs/launch-card.png)
+![从一句选歌想法到 Spotify 歌单，再为同一张歌单每日加歌。](docs/launch-card.png)
 
-## 看看第二轮怎么变
+## 就这样说
 
-> **你：** 我喜欢 Arooj Aftab，但《Mohabbat》听腻了。还有什么可以试试？
->
-> **第一轮：** 试试同张专辑的 [Last Night](https://open.spotify.com/track/3OBkjktMqs7QJ6dOUPWTji)。《Mohabbat》先放一放。
->
-> **你：** 《Last Night》第一次听，很对味。继续找她的歌。
->
-> **第二轮：** 试试 [Suroor](https://open.spotify.com/track/43li6JLxAxfmyVlHIbO9rn) 和 [Udhero Na feat. Anoushka Shankar](https://open.spotify.com/track/2hFN5GkZ1CNZNRp1tFYWqW)。保留这位歌手，换掉上一轮已经给过的歌。
+> 给我做一张雨夜走路听的歌单。保留我喜欢的后朋克和朦胧吉他，多挖一点。每天北京时间早上 8:30，往同一张歌单加 5 首。
 
-*听众反馈为虚构示例，歌曲可在 Spotify 公开曲库找到。*
+智能体会沿着你的口味往外找。在这个例子里，可以从熟悉歌手的作品里挖一首 [Primary · The Cure](https://open.spotify.com/track/4fnx6Wman02ryvAOqKm6iI)，再找气质相邻的 [Second Skin · The Chameleons](https://open.spotify.com/track/5F43dz91uj1bQRKDvXbt1f)，也试一首贴近朦胧吉他方向的 [Lorelei · Cocteau Twins](https://open.spotify.com/track/1ZnXuijpwEBjhNxpEnb8WH)。
 
-## 它会做什么
+连接和工具可用时，智能体会按你的要求建一张私密歌单，再为它创建每日任务。每天先去重，再往同一张歌单加歌，保留你已有的曲目。想换口味时，直接说一句「多点贝斯，少点慢歌」，之后的选曲就沿新方向走。
 
-- 分开记录歌手是否熟悉、歌曲是否听过、推荐是否合适。
-- 先给一小批，再根据具体反馈调整，延续已有的筛选依据。
-- 有兼容的曲库工具时核验录音版本与 Spotify 链接，无法核验的内容会明确标注。
-- 偏好调整默认只用于当前对话；保存偏好文件、创建或修改歌单，需要你明确提出。
+*上面是模拟场景，曲目已在公开曲库核验。示例本身没有创建歌单或任务。*
 
-这是对话中的选曲工作流，不会修改 Spotify 原生推荐算法。
+## 安装到 Codex
 
-## 安装到 Codex 项目
-
-如果已安装 Node.js 22.20+ 和 Git，在准备使用技能的项目目录运行：
+已安装 Node.js 22.20+ 和 Git 时，在项目目录运行：
 
 ```bash
 npx skills add JadoreSamoyed/spotify-discovery-tuning --skill spotify-discovery-tuning --agent codex --copy
 ```
 
-也可以下载发行版 ZIP，或阅读源码后手动复制技能目录。Codex 从项目的 `.agents/skills` 加载技能。[Skills CLI 文档](https://www.skills.sh/docs/cli) · [Codex 技能文档](https://developers.openai.com/codex/skills/)
+也可以把[发行版 ZIP](https://github.com/JadoreSamoyed/spotify-discovery-tuning/releases/latest)解压到项目的 `.agents/skills`，确保有 `.agents/skills/spotify-discovery-tuning/SKILL.md`。连接 Spotify，在该项目的 Codex 对话里输入 `$spotify-discovery-tuning`，接上你的选歌想法。
 
-<details>
-<summary>Bash</summary>
+| 想做什么 | 需要什么 |
+| --- | --- |
+| 先看推荐 | 可以查询 Spotify 曲库 |
+| 建歌单 | 可以创建和追加 Spotify 歌单，或有可用的歌单生成工具 |
+| 每天自动更新 | 定时环境也能读取该技能、访问同一个已授权歌单并保留私人运行记录 |
 
-```bash
-git clone https://github.com/JadoreSamoyed/spotify-discovery-tuning.git spotify-discovery-tuning-source
-cat spotify-discovery-tuning-source/skills/spotify-discovery-tuning/SKILL.md
-mkdir -p .agents/skills
-cp -R spotify-discovery-tuning-source/skills/spotify-discovery-tuning .agents/skills/
-```
+在建歌单的同一句话里加上「每天更新」，就可以同时请求建歌单和定时。Codex 需要有可用的定时任务功能，依赖本地文件的任务运行时需要电脑和 App 在线。配置后可在定时任务页面检查首次运行。[Codex 定时任务](https://learn.chatgpt.com/docs/automations?surface=app)
 
-</details>
+[技能正文](skills/spotify-discovery-tuning/SKILL.md) · [每日刷新规则](skills/spotify-discovery-tuning/references/daily-refresh.md)
 
-<details>
-<summary>PowerShell</summary>
-
-```powershell
-git clone https://github.com/JadoreSamoyed/spotify-discovery-tuning.git spotify-discovery-tuning-source
-Get-Content -LiteralPath './spotify-discovery-tuning-source/skills/spotify-discovery-tuning/SKILL.md' -Raw
-New-Item -ItemType Directory -Force -Path './.agents/skills' | Out-Null
-Copy-Item -LiteralPath './spotify-discovery-tuning-source/skills/spotify-discovery-tuning' -Destination './.agents/skills/' -Recurse
-```
-
-</details>
-
-安装后应存在 `.agents/skills/spotify-discovery-tuning/SKILL.md`。如果 Codex 未显示该技能，可重启 Codex。随后这样调用：
-
-```text
-$spotify-discovery-tuning
-帮我找熟悉歌手唱的、我还没听过的歌。先给一小批，
-需要哪些歌手或歌曲信息就先问我，再根据反馈调整。
-```
-
-## 曲库连接与核验
-
-实时核验需要在智能体宿主中连接**兼容的 Spotify 曲库搜索或查询工具**。这个仓库提供技能指令，不包含 Spotify 连接器或访问凭据。
-
-缺少工具时，技能会请你连接工具或提供 Spotify 链接，并明确说明核验状态。拿到链接不代表已经读过链接内容。仍然可以讨论选曲方向，但未经核验的候选不能写成已核实的曲库结果。
-
-曲库核验确认“这是哪首、哪个版本”；你的反馈确认“这首对我是不是新歌”。
-
-## 证据与适用范围
-
-已有检查及其边界见 [评估说明](evals/README.md)。目前**没有实测的听众体验提升数据**，也不声称优于普通提示词。上面的对话展示预期行为，不是试听实验。
-
-采用 [MIT 许可证](LICENSE)。独立社区项目，与 Spotify、OpenAI 无隶属关系。
-
-如果它帮你挖到一首想再听的歌，可以点个 Star 方便下次找到。第二轮选偏了，也欢迎留下一条具体反馈。[提交反馈](https://github.com/JadoreSamoyed/spotify-discovery-tuning/issues/new)
+[MIT 许可证](LICENSE)。如果它帮你做出一张想长期听的歌单，欢迎点 Star，或者分享你给智能体的那句想法。[反馈入口](https://github.com/JadoreSamoyed/spotify-discovery-tuning/issues)

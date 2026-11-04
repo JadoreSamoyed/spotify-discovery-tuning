@@ -1,21 +1,21 @@
-# Spotify capabilities
+# Spotify connector routing
 
-Discover the current tool schemas before using the names below. These are capability mappings for the Codex Spotify connection. Other hosts can use equivalent tools.
+Discover live tool schemas and use equivalent capabilities on other hosts. The Codex Spotify connector currently exposes these tools:
 
-| Need | Codex Spotify capability | How to use it |
-| --- | --- | --- |
-| Discover from a listening request | `spotify_search` | Preserve the user's language and wording, applying only transformations the tool allows. Do not pass real names, handles, or unrelated user data. |
-| Verify a known title and artist | `spotify_query_catalog` | Use `MUSIC` and batch distinct lookups within the live limit. Compare artist and release when names match. Use discovery tools for moods and similarity. |
-| Resolve a known Spotify URI | `spotify_get_entity` | Use tool-returned or user-provided identifiers. Prefer the canonical link from the result. |
-| Inspect a returned playlist or album | `spotify_get_collection_items` | Read from its known URI. Respect pagination, provider polling rules, and the round's read budget. |
-| Create a requested playlist | The connector's playlist write tools | Reuse verified tracks, preserve requested order, and read back if supported. A permission field or read-only generated result does not authorize a write. |
+| Intent | Capability |
+| --- | --- |
+| Discover by mood, context, or taste | `spotify_search`. Use the listener's wording and original language within provider query rules. Inspect any playlist results before using their tracks. |
+| Resolve known songs or URIs | `spotify_query_catalog` in batches with `MUSIC`, or `spotify_get_entity`. Match artist and recording version. Prefer returned canonical links. |
+| Inspect an existing collection | `spotify_get_collection_items`. Use a known URI, check readiness and read all relevant pages before claiming complete coverage. |
+| Make a playlist from an already selected list | `spotify_create_playlist`, then `spotify_add_playlist_items`. Confirm success and read back the exact target. The connector appends at the end. |
+| Ask Spotify to pick and build from an idea | `spotify_generate_playlist`. Requires explicit playlist intent and an eligible Spotify Premium connection. It creates a private playlist. Check readiness and inspect the result before scheduling updates. |
 
-Read per-item warnings and errors. Preserve good results on partial failure. Retry a transient read failure once, within the round's budget and provider backoff. Stop on authorization or region restrictions. If the connector returns only a pending generated playlist and the budget is spent, report the limitation or finish with already verified tracks.
+For taste-shaped curation, first obtain a verified track list using catalog and discovery tools. When the connector supports direct creation and add, use that route to preserve the curated picks and their order. When the listener delegates song selection to the generator, pass their intent in their language without invented constraints. If a generator falls back because of the account plan, disclose the result. A request for a curated playlist can still be completed via independently supported create and add tools when those are authorized by the user's request and the host's tool rules.
 
-A playlist write that times out has an unknown outcome. Check the target playlist or account for the attempted change before retrying. If the outcome remains uncertain, report that uncertainty and stop to avoid duplicate playlists or tracks.
+A catalog match verifies identity. Track availability can depend on locale, account and restrictions. Exclude known blocked candidates. Leave missing availability unknown. Do not use a save status, track length, or incomplete listening history as proof that a song is unheard. [Spotify Recently Played](https://developer.spotify.com/documentation/web-api/reference/get-recently-played)
 
-A catalog match verifies identity. Playability can depend on locale, account, and restrictions. Use `PLAYABLE` only where returned, preserve known restrictions, and leave unspecified status unknown. A search response can include a generated playlist with `NOT_SAVED`. Inspect its contents before recommending from it.
+Reuse successful results on partial reads. Follow provider backoff for pending generation or rate limits. Bound further discovery and return fewer credible picks if necessary.
 
-`playback.duration_ms` is track length. `display.played_ms` describes position for supported spoken content. Neither records music listening events. The Recently Played endpoint is a separate integration with bounded coverage. A user-provided export also covers only the accounts, dates, and services it describes. [Spotify Recently Played](https://developer.spotify.com/documentation/web-api/reference/get-recently-played) · [Understanding Spotify data](https://support.spotify.com/us/article/understanding-your-data/)
+For the empty-playlist route, assemble the verified seed list before creating. Use a private visibility setting or a documented private default. If visibility is unknown, return the verified list and explain the setup needed for private creation. Once the empty playlist is created, save its URI in the current authorized context and add to that URI. For a generated playlist, read back its picks before deciding whether more tracks are needed.
 
-Spotify's own Taste Profile controls have their own documented scope. Suggest them only if the user asks about native recommendations. [Spotify Taste Profile](https://support.spotify.com/us/article/your-taste-profile/)
+On a timeout or ambiguous write result, read back the same target, or check whether a just-created playlist can be identified unambiguously. Preserve known successes. Retry only missing tracks when prior writes are settled and a complete read confirms what is missing. If the operation could still be in flight or the playlist cannot be identified, stop and report uncertainty. Do not create another playlist as recovery.
